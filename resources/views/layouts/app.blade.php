@@ -7,10 +7,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>@yield('title', 'Kasir App')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-pos-bg">
 
     <div id="sidebar-overlay"
         class="fixed inset-0 bg-gray-900/50 z-30 hidden transition-opacity lg:hidden backdrop-blur-sm"></div>
@@ -23,6 +24,7 @@
 
         <main class="p-8">
             <div class="animate-fade-in">
+                @include('layouts.partials.alerts')
                 @yield('content')
             </div>
         </main>

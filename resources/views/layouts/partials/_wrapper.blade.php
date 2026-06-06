@@ -1,7 +1,7 @@
 <aside id="sidebar"
-    class="fixed inset-y-0 left-0 w-64 bg-slate-900 text-white shadow-xl flex flex-col transition-transform duration-300 ease-in-out transform translate-x-0 z-40">
+    class="fixed inset-y-0 left-0 w-64 bg-pos-dark text-white shadow-xl flex flex-col transition-transform duration-300 ease-in-out transform translate-x-0 z-40">
     <div class="flex items-center justify-center h-20 border-b border-slate-800 shrink-0">
-        <h1 class="text-xl font-bold tracking-wider uppercase">Kasir <span class="text-blue-500">App</span></h1>
+        <h1 class="text-xl font-bold tracking-wider uppercase">Kasir <span class="text-pos-accent">App</span></h1>
     </div>
 
     <nav
@@ -13,7 +13,7 @@
         @endif
     </nav>
 
-    <div class="w-full p-4 border-t border-slate-800 bg-slate-900 shrink-0">
+    <div class="w-full p-4 border-t border-slate-800 bg-pos-dark shrink-0">
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"

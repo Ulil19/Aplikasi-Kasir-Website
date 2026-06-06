@@ -35,7 +35,7 @@ export function initSidebar() {
         if (isClosed) {
             // BUKA SIDEBAR
             sidebar.classList.remove("-translate-x-full");
-            sidebar.classList.add("translate-x-0"); // Tambahkan class tampil
+            sidebar.classList.add("translate-x-0");
 
             if (window.innerWidth >= 1024) {
                 mainContent.classList.remove("ml-0");
@@ -49,7 +49,7 @@ export function initSidebar() {
             sidebar.classList.remove("translate-x-0");
 
             if (window.innerWidth >= 1024) {
-                // PENTING: Hapus lg:ml-64 agar main-content bisa memenuhi layar (ml-0)
+                // Hapus lg:ml-64 agar main-content bisa memenuhi layar (ml-0)
                 mainContent.classList.remove("ml-64", "lg:ml-64");
                 mainContent.classList.add("ml-0");
             } else {
