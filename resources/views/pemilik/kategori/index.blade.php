@@ -43,10 +43,10 @@
                                         Edit
                                     </a>
                                     <form action="{{ route('pemilik.kategori.hapus', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                                        class="form-delete">
                                         @csrf
                                         <button type="submit"
-                                            class="bg-pos-danger/10 hover:bg-pos-danger text-pos-danger hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
+                                            class="bg-pos-danger/10 hover:bg-pos-danger text-pos-danger hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer">
                                             Hapus
                                         </button>
                                     </form>
