@@ -30,15 +30,15 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50 text-sm text-pos-dark">
-                    @foreach ($kategori as $item)
+                    @forelse ($kategori as $item)
                         <tr class="hover:bg-gray-50/40 transition-colors">
                             <td class="py-4 px-6 font-medium text-gray-400">{{ $loop->iteration }}</td>
                             <td class="py-4 px-6 font-medium">{{ $item->nama }}</td>
                             <td class="py-4 px-6">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="#" data-modal-target="kategoriModal" data-mode="edit"
-                                        data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                        data-deskripsi="{{ $item->deskripsi }}"
+                                        data-id="{{ $item->id }}" data-nama="{{ e($item->nama) }}"
+                                        data-deskripsi="{{ e($item->deskripsi) }}"
                                         class="bg-pos-success/10 hover:bg-pos-success text-pos-success hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
                                         Edit
                                     </a>
@@ -53,7 +53,12 @@
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr class="hover:bg-gray-50/40 transition-colors">
+                            <td colspan="3" class="py-4 px-6 text-center text-gray-400 italic">Tidak ada kategori
+                                yang tersedia.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
