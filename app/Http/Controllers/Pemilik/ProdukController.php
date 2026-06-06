@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use App\Models\Produk;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class ProdukController extends Controller
