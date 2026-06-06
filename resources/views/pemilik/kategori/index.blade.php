@@ -12,7 +12,7 @@
                 <p class="text-xs text-gray-500 mt-0.5">Kelola data kategori yang tersedia.</p>
             </div>
             <div class="flex shrink-0">
-                <button data-modal-target="kategoriModal"
+                <button data-modal-target="kategoriModal" data-mode="create"
                     class="inline-flex items-center justify-center bg-pos-primary hover:bg-pos-primary/90 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-sm cursor-pointer">
                     + Tambah Kategori
                 </button>
@@ -36,14 +36,20 @@
                             <td class="py-4 px-6 font-medium">{{ $item->nama }}</td>
                             <td class="py-4 px-6">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="#"
+                                    <a href="#" data-modal-target="kategoriModal" data-mode="edit"
+                                        data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                        data-deskripsi="{{ $item->deskripsi }}"
                                         class="bg-pos-success/10 hover:bg-pos-success text-pos-success hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
                                         Edit
                                     </a>
-                                    <a href="#"
-                                        class="bg-pos-danger/10 hover:bg-pos-danger text-pos-danger hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
-                                        Hapus
-                                    </a>
+                                    <form action="{{ route('pemilik.kategori.hapus', $item->id) }}" method="POST"
+                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                                        @csrf
+                                        <button type="submit"
+                                            class="bg-pos-danger/10 hover:bg-pos-danger text-pos-danger hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -66,6 +72,33 @@
                 </div>
                 <div class="p-6">
                     {{-- Konten Form --}}
+                    <form id="kategoriForm" action="{{ route('pemilik.kategori.simpan') }}" method="POST"
+                        class="space-y-4">
+                        @csrf
+                        <input type="hidden" name="_method" id="formMethod" value="POST">
+                        <input type="hidden" name="id" id="kategoriId">
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Kategori</label>
+                            <input type="text" name="nama" id="nama" required
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-pos-primary focus:border-pos-primary sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                            <textarea name="deskripsi" id="deskripsi" rows="3"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-pos-primary focus:border-pos-primary sm:text-sm"></textarea>
+                        </div>
+
+                        <div class="flex justify-end gap-2">
+                            <button type="button"
+                                class="modal-close bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-semibold px-4 py-2 rounded-md transition-all">
+                                Batal
+                            </button>
+                            <button type="submit"
+                                class="bg-pos-primary hover:bg-pos-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-md transition-all">
+                                Simpan
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

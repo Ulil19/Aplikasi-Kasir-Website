@@ -19,7 +19,12 @@ Route::middleware('auth')->group(function () {
     // Pemilik 
     Route::middleware('role:pemilik')->prefix('pemilik')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('pemilik.dashboard');
+        
         Route::get('/kategori', [KategoriController::class, 'index'])->name('pemilik.kategori');
+        route::post('/kategori/simpan', [KategoriController::class, 'simpan'])->name('pemilik.kategori.simpan');
+        route::post('/kategori/update/{id}', [KategoriController::class, 'update'])->name('pemilik.kategori.update');
+        route::post('/kategori/hapus/{id}', [KategoriController::class, 'hapus'])->name('pemilik.kategori.hapus');
+
         Route::get('/produk', [ProdukController::class, 'index'])->name('pemilik.produk');
     });
 
