@@ -21,7 +21,7 @@
 
         @include('layouts.partials.topbar')
 
-        <main class="p-8">
+        <main class="flex-1 p-3">
             <div class="animate-fade-in">
                 @yield('content')
                 @include('layouts.partials.alerts')
