@@ -12,7 +12,7 @@ class TransaksiKasirController extends Controller
 
     public function index()
     {
-        $produks = Kategori::with('produk')->get();
-        return view('kasir.transaksi', compact('produks'));
+        $kategori = Kategori::with('produk')->get();
+        return view('kasir.transaksi', compact('kategori'));
     }
 }
