@@ -3,9 +3,10 @@ export function initSidebar() {
     const mainContent = document.getElementById("main-content");
     const sidebarToggle = document.getElementById("sidebarToggle");
     const overlay = document.getElementById("sidebar-overlay");
-    const userRole = sidebar.getAttribute("data-role");
 
     if (!sidebar || !sidebarToggle) return;
+
+    const userRole = sidebar.getAttribute("data-role");
 
     function checkScreenSize() {
         if (window.innerWidth < 1024) {
