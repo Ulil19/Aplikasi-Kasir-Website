@@ -48,53 +48,51 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50 text-sm text-pos-dark">
-                        @if ($kategori->pluck('produk')->collapse()->isEmpty())
+                        @if ($produk->isEmpty())
                             <tr class="hover:bg-gray-50/40 transition-colors">
                                 <td colspan="7" class="py-4 px-6 text-center text-gray-400 italic">
                                     Tidak ada data produk yang tersedia.
                                 </td>
                             </tr>
                         @else
-                            @foreach ($kategori as $kat)
-                                @foreach ($kat->produk as $prod)
-                                    <tr class="hover:bg-gray-50/40 transition-colors">
-                                        <td class="py-4 px-6 font-medium text-gray-400">
-                                            {{ $loop->parent->iteration * $loop->iteration }}</td>
-                                        <td class="py-4 px-6 font-medium">{{ $prod->nama }}</td>
-                                        <td class="py-4 px-6 font-medium">{{ $kat->nama }}</td>
-                                        <td class="py-4 px-6">{{ $prod->deskripsi }}</td>
-                                        <td class="py-4 px-6 font-medium">Rp {{ number_format($prod->harga, 0, ',', '.') }}
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            @if ($prod->gambar)
-                                                <img src="{{ asset('storage/' . $prod->gambar) }}" alt="{{ $prod->nama }}"
-                                                    class="w-16 h-16 object-cover rounded-md">
-                                            @else
-                                                <span class="text-gray-400">Tidak ada gambar</span>
-                                            @endif
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            <div class="flex items-center justify-end gap-2">
-                                                <a href="#" data-modal-target="produkModal" data-mode="edit"
-                                                    data-id="{{ $prod->id }}" data-nama="{{ e($prod->nama) }}"
-                                                    data-kategori_id="{{ $prod->kategori_id }}"
-                                                    data-deskripsi="{{ e($prod->deskripsi) }}"
-                                                    data-harga="{{ $prod->harga }}" data-gambar="{{ $prod->gambar }}"
-                                                    class="bg-pos-success/10 hover:bg-pos-success text-pos-success hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
-                                                    Edit
-                                                </a>
-                                                <form action="{{ route('pemilik.produk.hapus', $prod->id) }}"
-                                                    method="POST" class="form-delete">
-                                                    @csrf
-                                                    <button type="submit"
-                                                        class="bg-pos-danger/10 hover:bg-pos-danger text-pos-danger hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
-                                                        Hapus
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @foreach ($produk as $prod)
+                                <tr class="hover:bg-gray-50/40 transition-colors">
+                                    <td class="py-4 px-6 font-medium text-gray-400">
+                                        {{ ($produk->currentPage() - 1) * $produk->perPage() + $loop->iteration }}</td>
+                                    <td class="py-4 px-6 font-medium">{{ $prod->nama }}</td>
+                                    <td class="py-4 px-6 font-medium">{{ $prod->kategori->nama }}</td>
+                                    <td class="py-4 px-6">{{ $prod->deskripsi }}</td>
+                                    <td class="py-4 px-6 font-medium">Rp {{ number_format($prod->harga, 0, ',', '.') }}
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        @if ($prod->gambar)
+                                            <img src="{{ asset('storage/' . $prod->gambar) }}" alt="{{ $prod->nama }}"
+                                                class="w-16 h-16 object-cover rounded-md">
+                                        @else
+                                            <span class="text-gray-400">Tidak ada gambar</span>
+                                        @endif
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <a href="#" data-modal-target="produkModal" data-mode="edit"
+                                                data-id="{{ $prod->id }}" data-nama="{{ e($prod->nama) }}"
+                                                data-kategori_id="{{ $prod->kategori_id }}"
+                                                data-deskripsi="{{ e($prod->deskripsi) }}"
+                                                data-harga="{{ $prod->harga }}" data-gambar="{{ $prod->gambar }}"
+                                                class="bg-pos-success/10 hover:bg-pos-success text-pos-success hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
+                                                Edit
+                                            </a>
+                                            <form action="{{ route('pemilik.produk.hapus', $prod->id) }}" method="POST"
+                                                class="form-delete">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="bg-pos-danger/10 hover:bg-pos-danger text-pos-danger hover:text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         @endif
                     </tbody>

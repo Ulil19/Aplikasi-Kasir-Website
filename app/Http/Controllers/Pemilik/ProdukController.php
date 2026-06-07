@@ -15,9 +15,11 @@ class ProdukController extends Controller
 
     public function index()
     {
-        $kategori = Kategori::with('produk')->get();
+        // $kategori = Kategori::with('produk')->paginate(10);
+        $produk = Produk::with('kategori')->paginate(10);
+        $kategori = Kategori::all();
         $produkTerhapus = Produk::onlyTrashed()->get();
-        return view('pemilik.produk.index', compact('kategori', 'produkTerhapus'));
+        return view('pemilik.produk.index', compact('kategori', 'produk', 'produkTerhapus'));
     }
 
     // Tambah produk baru
@@ -100,10 +102,10 @@ class ProdukController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil dipindahkan ke tempat sampah.');
     }
 
-    
+
     public function hapusPermanen($id)
     {
-        
+
         $produk = Produk::withTrashed()->findOrFail($id);
 
         if ($produk->gambar) {
@@ -117,7 +119,7 @@ class ProdukController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil dihapus permanen.');
     }
 
-    
+
     public function restore($id)
     {
         $produk = Produk::withTrashed()->findOrFail($id);
