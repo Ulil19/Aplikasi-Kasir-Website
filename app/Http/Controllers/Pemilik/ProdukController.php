@@ -16,7 +16,8 @@ class ProdukController extends Controller
     public function index()
     {
         $kategori = Kategori::with('produk')->get();
-        return view('pemilik.produk.index', compact('kategori'));
+        $produkTerhapus = Produk::onlyTrashed()->get();
+        return view('pemilik.produk.index', compact('kategori', 'produkTerhapus'));
     }
 
     // Tambah produk baru
@@ -94,6 +95,16 @@ class ProdukController extends Controller
     public function hapus($id)
     {
         $produk = Produk::findOrFail($id);
+        $produk->delete();
+
+        return redirect()->back()->with('success', 'Produk berhasil dipindahkan ke tempat sampah.');
+    }
+
+    
+    public function hapusPermanen($id)
+    {
+        
+        $produk = Produk::withTrashed()->findOrFail($id);
 
         if ($produk->gambar) {
             if (Storage::disk('public')->exists($produk->gambar)) {
@@ -101,15 +112,18 @@ class ProdukController extends Controller
             }
         }
 
-        $produk->delete();
+        $produk->forceDelete();
 
-        return redirect()->back()->with('success', 'Produk berhasil dihapus.');
+        return redirect()->back()->with('success', 'Produk berhasil dihapus permanen.');
     }
 
+    
     public function restore($id)
     {
+        $produk = Produk::withTrashed()->findOrFail($id);
+        $produk->restore();
 
+        return redirect()->back()->with('success', 'Produk berhasil dipulihkan.');
     }
-
 
 }

@@ -28,7 +28,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/produk', [ProdukController::class, 'index'])->name('pemilik.produk');
         route::post('/produk/simpan', [ProdukController::class, 'simpan'])->name('pemilik.produk.simpan');
         route::post('/produk/update/{id}', [ProdukController::class, 'update'])->name('pemilik.produk.update');
-        route::post('/produk/hapus/{id}', [ProdukController::class, 'hapus'])->name('pemilik.produk.hapus');
+        Route::post('/produk/hapus/{id}', [ProdukController::class, 'hapus'])->name('pemilik.produk.hapus');
+        route::post('/produk/hapus-permanen/{id}', [ProdukController::class, 'hapusPermanen'])->name('pemilik.produk.hapus-permanen');
         route::post('/produk/restore/{id}', [ProdukController::class, 'restore'])->name('pemilik.produk.restore');
     });
 
