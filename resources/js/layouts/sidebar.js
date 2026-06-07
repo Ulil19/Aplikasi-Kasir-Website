@@ -3,6 +3,7 @@ export function initSidebar() {
     const mainContent = document.getElementById("main-content");
     const sidebarToggle = document.getElementById("sidebarToggle");
     const overlay = document.getElementById("sidebar-overlay");
+    const userRole = sidebar.getAttribute("data-role");
 
     if (!sidebar || !sidebarToggle) return;
 
@@ -15,12 +16,20 @@ export function initSidebar() {
             mainContent.classList.add("ml-0");
             overlay?.classList.add("hidden");
         } else {
-            // Tampilan Desktop: Tampilkan sidebar
-            sidebar.classList.remove("-translate-x-full");
-            sidebar.classList.add("translate-x-0");
-
-            mainContent.classList.remove("ml-0");
-            mainContent.classList.add("ml-64");
+            // Tampilan Desktop
+            if (userRole === "pemilik") {
+                // Pemilik: Default TERBUKA
+                sidebar.classList.remove("-translate-x-full");
+                sidebar.classList.add("translate-x-0");
+                mainContent.classList.remove("ml-0");
+                mainContent.classList.add("ml-64");
+            } else {
+                // Kasir/Role lain: Default TERTUTUP
+                sidebar.classList.add("-translate-x-full");
+                sidebar.classList.remove("translate-x-0");
+                mainContent.classList.remove("ml-64", "lg:ml-64");
+                mainContent.classList.add("ml-0");
+            }
             overlay?.classList.add("hidden");
         }
     }

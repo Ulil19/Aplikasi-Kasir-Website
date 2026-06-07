@@ -1,5 +1,6 @@
-<aside id="sidebar"
-    class="fixed inset-y-0 left-0 w-64 bg-pos-dark text-white shadow-xl flex flex-col transition-transform duration-300 ease-in-out transform translate-x-0 z-40">
+<aside id="sidebar" data-role="{{ auth()->user()->role }}"
+    class="fixed inset-y-0 left-0 w-64 bg-pos-dark text-white shadow-xl flex flex-col transition-transform duration-300 ease-in-out z-40
+    {{ auth()->user()->role === 'pemilik' ? 'translate-x-0' : '-translate-x-full' }}">
     <div class="flex items-center justify-center h-20 border-b border-slate-800 shrink-0">
         <h1 class="text-xl font-bold tracking-wider uppercase">Kasir <span class="text-pos-accent">App</span></h1>
     </div>
