@@ -15,4 +15,5 @@ class TransaksiKasirController extends Controller
         $kategori = Kategori::with('produk')->get();
         return view('kasir.transaksi', compact('kategori'));
     }
+
 }

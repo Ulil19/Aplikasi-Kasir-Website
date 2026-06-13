@@ -9,20 +9,20 @@
             {{-- Search Bar --}}
             <div>
                 <div class="flex gap-2 items-center mb-4">
-                    <input type="text" placeholder="Cari kopi, makanan, atau snack..."
+                    <input type="text" id="search-input" placeholder="Cari kopi, makanan, atau snack..."
                         class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pos-accent" />
                 </div>
             </div>
 
             <div class="mb-5">
                 <div class="flex gap-2 w-full overflow-x-auto whitespace-nowrap pb-2 scrollbar-none">
-                    <div
-                        class="rounded-full border border-pos-primary py-1 px-4 text-center text-sm transition-all shadow-sm bg-pos-primary text-white cursor-pointer">
+                    <div data-kategori="all"
+                        class="category-pill rounded-full border border-pos-primary py-1 px-4 text-center text-sm transition-all shadow-sm bg-pos-primary text-white cursor-pointer">
                         Semua
                     </div>
                     @foreach ($kategori as $k)
-                        <div
-                            class="rounded-full border border-pos-primary py-1 px-4 text-center text-sm transition-all shadow-sm text-pos-dark hover:bg-pos-primary hover:text-white cursor-pointer">
+                        <div data-kategori="{{ $k->nama }}"
+                            class="category-pill rounded-full border border-pos-primary py-1 px-4 text-center text-sm transition-all shadow-sm text-pos-dark hover:bg-pos-primary hover:text-white cursor-pointer">
                             {{ $k->nama }}
                         </div>
                     @endforeach
@@ -33,8 +33,8 @@
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     @foreach ($kategori as $kat)
                         @foreach ($kat->produk as $produk)
-                            <div
-                                class="border border-pos-dark rounded-xl shadow-sm p-3 flex flex-col justify-between bg-white">
+                            <div class="produk-card border border-pos-dark rounded-xl shadow-sm p-3 flex flex-col justify-between bg-white"
+                                data-kategori="{{ $kat->nama }}" data-nama="{{ $produk->nama }}">
                                 <div>
                                     <div
                                         class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
@@ -56,9 +56,12 @@
                                         Rp {{ number_format($produk->harga, 0, ',', '.') }}
                                     </span>
                                     {{-- Button Tambah ke Keranjang --}}
-                                    <button
-                                        onclick="addToCart({{ $produk->id }}, '{{ $produk->nama }}', {{ $produk->harga }})"
-                                        class="w-8 h-8 rounded-full bg-pos-primary flex items-center justify-center shadow text-white hover:bg-pos-accent transition-colors">
+                                    <button id="add-to-cart-{{ $produk->id }}"
+                                        class="w-8 h-8 rounded-full bg-pos-primary flex items-center justify-center shadow text-white hover:bg-pos-accent transition-colors"
+                                        data-nama="{{ $produk->nama }}" data-harga="{{ $produk->harga }}"
+                                        data-id="{{ $produk->id }}"
+                                        data-gambar="{{ asset('storage/' . $produk->gambar) }}"
+                                        data-kategori="{{ $kat->nama }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -89,6 +92,7 @@
                     Item</span>
             </div>
             <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-3 min-h-62.5">
+                {{-- ketika keranjang kosong --}}
                 <div id="cart-empty"
                     class="text-center py-12 text-gray-400 flex flex-col items-center justify-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-300" width="40" height="40"
@@ -110,7 +114,7 @@
                     <span class="text-sm text-gray-500 font-medium">Total Tagihan</span>
                     <span id="cart-total" class="text-lg font-bold text-pos-primary">Rp 0</span>
                 </div>
-                <button
+                <button id="checkout-btn"
                     class="w-full bg-pos-primary hover:bg-pos-accent text-white font-bold py-3 rounded-xl transition-all active:scale-[0.98] shadow-sm flex justify-center items-center gap-2">
                     Bayar Sekarang (<span id="cart-count-bottom">0</span> Item)
                 </button>
