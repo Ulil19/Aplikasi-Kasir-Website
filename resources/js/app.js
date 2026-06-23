@@ -1,13 +1,15 @@
 import "./bootstrap";
 
 import { initSidebar } from "./layouts/sidebar";
-import { initModal } from "./pemilik/modal";
 import { initAlert } from "./components/alert";
+import { initModal } from "./pemilik/modal";
 import { initPos } from "./kasir/pos";
+import { initLaporan } from "./pemilik/laporan";
 
 document.addEventListener("DOMContentLoaded", () => {
     initSidebar();
-    initModal();
     initAlert();
+    initModal();
     initPos();
+    initLaporan();
 });

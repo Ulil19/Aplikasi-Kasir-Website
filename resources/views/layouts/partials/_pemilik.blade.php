@@ -24,8 +24,8 @@
     <i class="fa fa-cash-register mr-3 w-5 text-center"></i> Transaksi
 </a>
 
-<a href="/laporan"
-    class="flex items-center p-3 mb-2 {{ request()->is('laporan*') ? 'bg-pos-accent text-white' : 'text-stone-100 hover:text-white hover:bg-stone-600' }} rounded-lg transition">
+<a href="{{ route('pemilik.laporan') }}"
+    class="flex items-center p-3 mb-2 {{ request()->routeIs('pemilik.laporan') ? 'bg-pos-accent text-white' : 'text-stone-100 hover:text-white hover:bg-stone-600' }} rounded-lg transition">
     <i class="fa fa-chart-line mr-3 w-5 text-center"></i> Laporan
 </a>
 

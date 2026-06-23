@@ -51,16 +51,6 @@
                         class="bg-pos-primary hover:bg-opacity-90 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm">
                         Terapkan
                     </button>
-                    {{-- Tombol Export Excel --}}
-                    <button type="submit" onclick="document.getElementById('form-action').value='excel'"
-                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex items-center gap-1">
-                        <span>Excel</span>
-                    </button>
-                    {{-- Tombol Export PDF --}}
-                    <button type="submit" onclick="document.getElementById('form-action').value='pdf'"
-                        class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm flex items-center gap-1">
-                        <span>PDF</span>
-                    </button>
                     @if (request()->hasAny(['start_date', 'end_date', 'sort', 'cari']))
                         <a href="{{ request()->url() }}"
                             class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg text-sm font-medium transition-all shadow-sm">

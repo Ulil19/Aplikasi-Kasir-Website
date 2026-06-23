@@ -8,6 +8,7 @@ use App\Http\Controllers\Pemilik\ProdukController;
 use App\Http\Controllers\Kasir\PosController;
 use App\Http\Controllers\Kasir\TransaksiKasirController;
 use App\Http\Controllers\Pemilik\TransaksiController;
+use App\Http\Controllers\Pemilik\LaporanController;
 
 
 Route::get('/', function () {
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/transaksi', [TransaksiController::class, 'index'])->name('pemilik.transaksi');
         Route::get('/transaksi/detail/{id}', [TransaksiController::class, 'detail'])->name('pemilik.transaksi.detail');
+
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('pemilik.laporan');
 
     });
 

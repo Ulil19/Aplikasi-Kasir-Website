@@ -4,23 +4,30 @@ namespace App\Http\Controllers\Pemilik;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Kategori;
 use App\Models\Produk;
-use App\models\transaksi;
+use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    //
     public function dashboard()
     {
-        $produkterlaris = Produk::withCount('transaksiDetails as total_terjual')
-            ->orderBydesc('total_terjual')
+        $hariIni = now()->toDateString();
+
+        // 1. Total Omzet Pendapatan Hari Ini (Rupiah)
+        $omzetHariIni = Transaksi::whereDate('created_at', $hariIni)->sum('total');
+
+        // 2. Total Jumlah Transaksi/Nota Hari Ini
+        $transaksiCount = Transaksi::whereDate('created_at', $hariIni)->count();
+
+        // 3. Produk Terlaris Khusus Hari Ini
+        $produkterlaris = TransaksiDetail::whereDate('created_at', $hariIni)
+            ->select('nama_produk', DB::raw('SUM(jumlah) as total_terjual'))
+            ->groupBy('nama_produk')
+            ->orderBy('total_terjual', 'desc')
             ->first();
 
-        $transaksiCount = Transaksi::count();
-        $transaksiDetailCount = TransaksiDetail::count();
-
-        return view('pemilik.index', compact('transaksiCount', 'transaksiDetailCount', 'produkterlaris'));
+        return view('pemilik.index', compact('omzetHariIni', 'transaksiCount', 'produkterlaris'));
     }
 }
