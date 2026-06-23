@@ -9,11 +9,10 @@ use App\Models\Produk;
 
 class TransaksiKasirController extends Controller
 {
-
-    public function index()
+    // cetak struk
+    public function cetakStruk()
     {
-        $kategori = Kategori::with('produk')->get();
-        return view('kasir.transaksi', compact('kategori'));
+        
     }
 
 }

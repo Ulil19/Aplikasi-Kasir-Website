@@ -1,4 +1,9 @@
 let keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
+// Fungsi untuk menghitung kembalian secara otomatis saat kasir mengetik jumlah uang yang dibayarkan
+document
+    .getElementById("amount-paid")
+    .addEventListener("input", hitungKembalian);
+
 export function initPos() {
     // Fungsi untuk menambahkan produk ke keranjang
     const tambahKeKeranjang = document.querySelectorAll('[id^="add-to-cart-"]');
@@ -168,6 +173,7 @@ function updateKeranjang() {
     if (cartTotal)
         cartTotal.textContent = `Rp ${totalHargaAll.toLocaleString("id-ID")}`;
     initTombolAksiKeranjang();
+    hitungKembalian();
 }
 
 function initTombolAksiKeranjang() {
@@ -200,6 +206,42 @@ function initTombolAksiKeranjang() {
     });
 }
 
+// itung kembalian otomatis
+function hitungKembalian() {
+    const totalTagihan = keranjang.reduce(
+        (sum, item) => sum + item.harga * item.qty,
+        0
+    );
+
+    // 2. Ambil nilai uang yang diketik kasir
+    const uangBayarInput = document.getElementById("amount-paid");
+    const uangBayar = parseInt(uangBayarInput.value) || 0;
+
+    const kembalianText = document.getElementById("cart-change");
+
+    // 3. Logika kalkulasi kembalian
+    if (uangBayar >= totalTagihan && totalTagihan > 0) {
+        const kembalian = uangBayar - totalTagihan;
+        // Tampilkan kembalian dengan format mata uang Rupiah (contoh: Rp 15.000)
+        kembalianText.innerText = `Rp ${kembalian.toLocaleString("id-ID")}`;
+        kembalianText.classList.remove("text-red-500");
+        kembalianText.classList.add("text-pos-success"); // warna hijau jika cukup/lebih
+    } else if (uangBayar < totalTagihan && uangBayar > 0) {
+        //  merah jika uang yang diketik masih kurang
+        const kurangnya = totalTagihan - uangBayar;
+        kembalianText.innerText = `- Rp ${kurangnya.toLocaleString(
+            "id-ID"
+        )} (Kurang)`;
+        kembalianText.classList.remove("text-pos-success");
+        kembalianText.classList.add("text-red-500");
+    } else {
+        // Jika belum ada uang yang dimasukkan atau keranjang kosong
+        kembalianText.innerText = "Rp 0";
+        kembalianText.classList.remove("text-red-500");
+        kembalianText.classList.add("text-pos-success");
+    }
+}
+
 function clearKeranjang() {
     keranjang = [];
     localStorage.removeItem("keranjang");
@@ -207,51 +249,77 @@ function clearKeranjang() {
 }
 
 function prosesPembayaran() {
-    console.log(keranjang);
-    // if (keranjang.length === 0) {
-    //     Swal.fire({
-    //         icon: "info",
-    //         title: "Keranjang kosong",
-    //         text: "Silakan tambahkan produk ke keranjang sebelum melakukan pembayaran.",
-    //     });
-    //     return;
-    // }
-    // fetch("/kasir/proses-pembayaran", {
-    //     method: "POST",
-    //     headers: {
-    //         "content-type": "application/json",
-    //         "X-CSRF-TOKEN": document
-    //             .querySelector('meta[name="csrf-token"]')
-    //             .getAttribute("content"),
-    //     },
-    //     body: JSON.stringify({ keranjang }),
-    // })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         if (data.success) {
-    //             Swal.fire({
-    //                 icon: "success",
-    //                 title: "Pembayaran Berhasil",
-    //                 text: "Transaksi berhasil diproses.",
-    //                 showCancelButton: true,
-    //                 confirmButtonText: "Cetak Struk",
-    //                 cancelButtonText: "Tutup",
-    //             }).then((result) => {
-    //                 if (result.isConfirmed) {
-    //                     window.open(
-    //                         `/kasir/cetak-struk/${data.transaksi_id}`,
-    //                         "_blank"
-    //                     );
-    //                 }
-    //             });
-    //             clearKeranjang();
-    //         } else {
-    //             Swal.fire({
-    //                 icon: "error",
-    //                 title: "Pembayaran Gagal",
-    //                 text: data.message,
-    //             });
-    //         }
-    //     });
-    clearKeranjang();
+    // console.log(keranjang);
+    if (keranjang.length === 0) {
+        Swal.fire({
+            icon: "info",
+            title: "Keranjang kosong",
+            text: "Silakan tambahkan produk ke keranjang sebelum melakukan pembayaran.",
+        });
+        return;
+    }
+
+    const namaKustomer =
+        document.getElementById("customer-name").value.trim() || "Umum";
+    const uangBayar =
+        parseInt(document.getElementById("amount-paid").value) || 0;
+    const totalTagihan = keranjang.reduce(
+        (sum, item) => sum + item.harga * item.qty,
+        0
+    );
+
+    // Validasi final sebelum kirim ke Laravel
+    if (uangBayar < totalTagihan) {
+        Swal.fire({
+            icon: "warning",
+            title: "Uang Pembayaran Kurang",
+            text: "Mohon periksa kembali nominal uang yang dibayarkan konsumen.",
+        });
+        return;
+    }
+
+    const tokenInput = document.querySelector(
+        '#pembayaran-form input[name="_token"]'
+    );
+    const csrfToken = tokenInput ? tokenInput.value : null;
+
+    fetch("/kasir/proses-pembayaran", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: JSON.stringify({
+            keranjang,
+            kustomer: namaKustomer,
+            bayar: uangBayar,
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Pembayaran Berhasil",
+                    text: "Transaksi berhasil diproses.",
+                    showCancelButton: true,
+                    confirmButtonText: "Cetak Struk",
+                    cancelButtonText: "Tutup",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.open(
+                            `/kasir/cetak-struk/${data.transaksi_id}`,
+                            "_blank"
+                        );
+                    }
+                });
+                clearKeranjang();
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Pembayaran Gagal",
+                    text: data.message,
+                });
+            }
+        });
 }

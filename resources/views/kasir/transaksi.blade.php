@@ -108,14 +108,36 @@
                 </div>
             </div>
 
-            {{-- Bagian Total Tagihan & Aksi --}}
-            <div class="p-4 border-t border-gray-100 bg-gray-50/50 rounded-b-lg">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-sm text-gray-500 font-medium">Total Tagihan</span>
-                    <span id="cart-total" class="text-lg font-bold text-pos-primary">Rp 0</span>
+            <div class="p-4 border-t border-gray-100 bg-white space-y-3">
+                <div>
+                    <label for="customer-name" class="text-xs font-semibold text-gray-600 block mb-1">Nama Kustomer</label>
+                    <input type="text" id="customer-name" placeholder="Nama kustomer (opsional)..." value="Umum"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-pos-accent" />
+                </div>
+                <div>
+                    <label for="amount-paid" class="text-xs font-semibold text-gray-600 block mb-1">Nominal Uang Bayar
+                        (Rp)</label>
+                    <input type="number" id="amount-paid" placeholder="Masukkan jumlah uang..." min="0"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm font-semibold text-pos-success focus:outline-none focus:ring-2 focus:ring-pos-accent" />
+                </div>
+            </div>
+
+            <form id="pembayaran-form" class="hidden">
+                @csrf
+                <input type="hidden" />
+            </form>
+
+            <div class="p-4 border-t border-gray-100 bg-gray-50/50 rounded-b-lg space-y-2">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-500 font-medium">Total Tagihan</span>
+                    <span id="cart-total" class="font-bold text-pos-dark">Rp 0</span>
+                </div>
+                <div class="flex justify-between items-center text-sm pb-2 border-b border-gray-200">
+                    <span class="text-gray-500 font-medium">Kembalian</span>
+                    <span id="cart-change" class="font-bold text-pos-success">Rp 0</span>
                 </div>
                 <button id="checkout-btn"
-                    class="w-full bg-pos-primary hover:bg-pos-accent text-white font-bold py-3 rounded-xl transition-all active:scale-[0.98] shadow-sm flex justify-center items-center gap-2">
+                    class="w-full bg-pos-primary hover:bg-pos-accent text-white font-bold py-3 rounded-xl transition-all active:scale-[0.98] shadow-sm flex justify-center items-center gap-2 mt-2">
                     Bayar Sekarang (<span id="cart-count-bottom">0</span> Item)
                 </button>
             </div>

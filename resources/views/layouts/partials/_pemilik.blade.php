@@ -19,14 +19,9 @@
 
 <p class="text-xs text-stone-100 uppercase font-semibold mt-6 mb-4 ml-2">Penjualan</p>
 
-<a href="/transaksi"
-    class="flex items-center p-3 mb-2 {{ request()->is('transaksi*') ? 'bg-pos-accent text-white' : 'text-stone-100 hover:text-white hover:bg-stone-600' }} rounded-lg transition">
+<a href="{{ route('pemilik.transaksi') }}"
+    class="flex items-center p-3 mb-2 {{ request()->routeIs('pemilik.transaksi') ? 'bg-pos-accent text-white' : 'text-stone-100 hover:text-white hover:bg-stone-600' }} rounded-lg transition">
     <i class="fa fa-cash-register mr-3 w-5 text-center"></i> Transaksi
-</a>
-
-<a href="/riwayat-penjualan"
-    class="flex items-center p-3 mb-2 {{ request()->is('riwayat-penjualan*') ? 'bg-pos-accent text-white' : 'text-stone-100 hover:text-white hover:bg-stone-600' }} rounded-lg transition">
-    <i class="fa fa-history mr-3 w-5 text-center"></i> Riwayat Penjualan
 </a>
 
 <a href="/laporan"

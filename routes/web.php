@@ -5,7 +5,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Pemilik\DashboardController;
 use App\Http\Controllers\Pemilik\KategoriController;
 use App\Http\Controllers\Pemilik\ProdukController;
+use App\Http\Controllers\Kasir\PosController;
 use App\Http\Controllers\Kasir\TransaksiKasirController;
+use App\Http\Controllers\Pemilik\TransaksiController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,12 +34,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/produk/hapus/{id}', [ProdukController::class, 'hapus'])->name('pemilik.produk.hapus');
         route::post('/produk/hapus-permanen/{id}', [ProdukController::class, 'hapusPermanen'])->name('pemilik.produk.hapus-permanen');
         route::post('/produk/restore/{id}', [ProdukController::class, 'restore'])->name('pemilik.produk.restore');
+
+        Route::get('/transaksi', [TransaksiController::class, 'index'])->name('pemilik.transaksi');
+        Route::get('/transaksi/detail/{id}', [TransaksiController::class, 'detail'])->name('pemilik.transaksi.detail');
+
     });
 
     // kasir
     Route::middleware('role:kasir')->prefix('kasir')->group(function () {
-        Route::get('/transaksi', [TransaksiKasirController::class, 'index'])->name('kasir.transaksi');
-
+        Route::get('/transaksi', [PosController::class, 'index'])->name('kasir.transaksi');
+        Route::post('/proses-pembayaran', [PosController::class, 'prosesBayar'])->name('kasir.proses-bayar');
     });
 });
 
