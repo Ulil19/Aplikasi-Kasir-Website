@@ -1,10 +1,13 @@
 let keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
-// Fungsi untuk menghitung kembalian secara otomatis saat kasir mengetik jumlah uang yang dibayarkan
-document
-    .getElementById("amount-paid")
-    .addEventListener("input", hitungKembalian);
 
 export function initPos() {
+    const amountPaidInput = document.getElementById("amount-paid");
+    if (!amountPaidInput) {
+        return;
+    }
+
+    amountPaidInput.addEventListener("input", hitungKembalian);
+
     // Fungsi untuk menambahkan produk ke keranjang
     const tambahKeKeranjang = document.querySelectorAll('[id^="add-to-cart-"]');
 

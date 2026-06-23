@@ -142,6 +142,5 @@
                 </button>
             </div>
         </aside>
-
     </div>
 @endsection
